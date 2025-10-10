@@ -6,7 +6,7 @@ WORKDIR /workspace
 
 COPY ./ .
 
-RUN mvn package -Dquarkus.package.type=uber-jar
+RUN mvn package -Dquarkus.package.type=uber-jar -s /run/secrets/pulp-secret/settings-pulp.xml -Djavax.net.ssl.keyStore=/run/secrets/pulp-secret/dkliban.jks -Djavax.net.ssl.keyStorePassword=changeit
 
 FROM registry.access.redhat.com/ubi9/openjdk-11-runtime:1.21-1
 
