@@ -7,11 +7,12 @@ WORKDIR /workspace
 COPY ./ .
 
 # The buildah --secret flag requires a corresponding --mount=type=secret instruction to work, and the id in both must match exactly.
-RUN --mount=type=secret,id=pulp-secret/dkliban.jks
-RUN --mount=type=secret,id=pulp-secret/settings-pulp.xml \
-  echo "This is the settings-pulp content:" && cat /run/secrets/pulp-secret/settings-pulp.xml
-
-RUN mvn package -Dquarkus.package.type=uber-jar -s /run/secrets/pulp-secret/settings-pulp.xml -Djavax.net.ssl.keyStore=/run/secrets/pulp-secret/dkliban.jks -Djavax.net.ssl.keyStorePassword=changeit
+RUN --mount=type=secret,id=pulp-secret/dkliban.jks \
+  --mount=type=secret,id=pulp-secret/settings-pulp.xml \
+  mvn package -Dquarkus.package.type=uber-jar \
+  -s /run/secrets/pulp-secret/settings-pulp.xml \
+  -Djavax.net.ssl.keyStore=/run/secrets/pulp-secret/dkliban.jks \
+  -Djavax.net.ssl.keyStorePassword=changeit
 
 FROM registry.access.redhat.com/ubi9/openjdk-11-runtime:1.21-1
 
