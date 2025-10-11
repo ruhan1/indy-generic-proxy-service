@@ -9,7 +9,7 @@ COPY ./ .
 # The buildah --secret flag requires a corresponding --mount=type=secret instruction to work, and the id in both must match exactly.
 RUN --mount=type=secret,id=pulp-secret/dkliban.jks \
   --mount=type=secret,id=pulp-secret/settings-pulp.xml \
-  mvn package -Dquarkus.package.type=uber-jar \
+  mvn -B package -Dquarkus.package.type=uber-jar \
   -s /run/secrets/pulp-secret/settings-pulp.xml \
   -Djavax.net.ssl.keyStore=/run/secrets/pulp-secret/dkliban.jks \
   -Djavax.net.ssl.keyStorePassword=changeit
